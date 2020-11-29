@@ -1,12 +1,15 @@
 package com.example.phonebookwithmap;
 
 public class Person {
-    private final int id;
-    private String no_hp, nama, soundex;
+    private int id;
+    private String no_hp, nama, alamat, soundex;
     private Double latitude, longitude;
 
     public Person(int id) {
         this.id = id;
+    }
+    public Person() {
+
     }
 
     public void setNo_hp(String no_hp) {
@@ -20,6 +23,9 @@ public class Person {
     }
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+    public void setAlamat(String alamat) {
+        this.alamat = alamat;
     }
     public void setSoundex(String soundex) {
         this.soundex = soundex;
@@ -39,6 +45,9 @@ public class Person {
     }
     public Double getLongitude() {
         return longitude;
+    }
+    public String getAlamat() {
+        return alamat;
     }
     public String getSoundex() {
         return soundex;

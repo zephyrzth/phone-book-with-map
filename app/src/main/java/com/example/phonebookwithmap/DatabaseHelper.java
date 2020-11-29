@@ -25,6 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_KONTAKS_ID = "id";
     private static final String KEY_KONTAKS_NO_HP = "no_hp";
     private static final String KEY_KONTAKS_NAMA = "nama";
+    private static final String KEY_KONTAKS_ALAMAT = "alamat";
     private static final String KEY_KONTAKS_LATITUDE = "latitude";
     private static final String KEY_KONTAKS_LONGITUDE = "longitude";
     private static final String KEY_KONTAKS_SOUNDEX = "soundex";
@@ -47,6 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 KEY_KONTAKS_ID + " INTEGER PRIMARY KEY," +
                 KEY_KONTAKS_NO_HP + " TEXT," +
                 KEY_KONTAKS_NAMA + " TEXT," +
+                KEY_KONTAKS_ALAMAT + " TEXT," +
                 KEY_KONTAKS_LATITUDE + " DOUBLE," +
                 KEY_KONTAKS_LONGITUDE + " DOUBLE," +
                 KEY_KONTAKS_SOUNDEX + " TEXT" +
@@ -67,6 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_KONTAKS_NO_HP, person.getNo_hp());
             contentValues.put(KEY_KONTAKS_NAMA, person.getNama());
+            contentValues.put(KEY_KONTAKS_ALAMAT, person.getAlamat());
             contentValues.put(KEY_KONTAKS_LATITUDE, person.getLatitude());
             contentValues.put(KEY_KONTAKS_LONGITUDE, person.getLongitude());
             contentValues.put(KEY_KONTAKS_SOUNDEX, person.getSoundex());
@@ -92,6 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     Person newPerson = new Person(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_KONTAKS_ID)));
                     newPerson.setNo_hp(cursor.getString(cursor.getColumnIndexOrThrow(KEY_KONTAKS_NO_HP)));
                     newPerson.setNama(cursor.getString(cursor.getColumnIndexOrThrow(KEY_KONTAKS_NAMA)));
+                    newPerson.setAlamat(cursor.getString(cursor.getColumnIndexOrThrow(KEY_KONTAKS_ALAMAT)));
                     newPerson.setLatitude(cursor.getDouble(cursor.getColumnIndexOrThrow(KEY_KONTAKS_LATITUDE)));
                     newPerson.setLongitude(cursor.getDouble(cursor.getColumnIndexOrThrow(KEY_KONTAKS_LONGITUDE)));
                     newPerson.setSoundex(cursor.getString(cursor.getColumnIndexOrThrow(KEY_KONTAKS_SOUNDEX)));
@@ -113,15 +117,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Person> cariData(Person person) {
         ArrayList<Person> persons = new ArrayList<>();
 
-        String query = String.format("SELECT * FROM %s WHERE %s LIKE ? AND (%s LIKE ? OR %s = ?)",
+        String query = String.format("SELECT * FROM %s WHERE %s LIKE ? AND (%s LIKE ? OR %s = ?) AND %s LIKE ?",
                 TABLE_KONTAKS,
                 KEY_KONTAKS_NO_HP,
                 KEY_KONTAKS_NAMA,
-                KEY_KONTAKS_SOUNDEX);
+                KEY_KONTAKS_SOUNDEX,
+                KEY_KONTAKS_ALAMAT);
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(query, new String[] { "%" + person.getNo_hp() + "%",
                 "%" + person.getNama() + "%",
-                person.getSoundex()
+                person.getSoundex(),
+                "%" + person.getAlamat() + "%"
         });
         try {
             if (cursor.moveToFirst()) {
@@ -129,6 +135,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     Person newPerson = new Person(cursor.getInt(cursor.getColumnIndexOrThrow(KEY_KONTAKS_ID)));
                     newPerson.setNo_hp(cursor.getString(cursor.getColumnIndexOrThrow(KEY_KONTAKS_NO_HP)));
                     newPerson.setNama(cursor.getString(cursor.getColumnIndexOrThrow(KEY_KONTAKS_NAMA)));
+                    newPerson.setAlamat(cursor.getString(cursor.getColumnIndexOrThrow(KEY_KONTAKS_ALAMAT)));
                     newPerson.setLatitude(cursor.getDouble(cursor.getColumnIndexOrThrow(KEY_KONTAKS_LATITUDE)));
                     newPerson.setLongitude(cursor.getDouble(cursor.getColumnIndexOrThrow(KEY_KONTAKS_LONGITUDE)));
                     newPerson.setSoundex(cursor.getString(cursor.getColumnIndexOrThrow(KEY_KONTAKS_SOUNDEX)));
@@ -154,6 +161,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_KONTAKS_NO_HP, person.getNo_hp());
             contentValues.put(KEY_KONTAKS_NAMA, person.getNama());
+            contentValues.put(KEY_KONTAKS_ALAMAT, person.getAlamat());
             contentValues.put(KEY_KONTAKS_LATITUDE, person.getLatitude());
             contentValues.put(KEY_KONTAKS_LONGITUDE, person.getLongitude());
             contentValues.put(KEY_KONTAKS_SOUNDEX, person.getSoundex());
